@@ -11,12 +11,12 @@ QEMU_FLAGS  += -machine raspi4
 endif
 
 COPS += -g -Wall -nostdlib -nostdinc -Iinclude
-ASMOPS = -g -Iinclude 
+ASMOPS = -g -Iinclude -nostdlib -nostdinc
 
 BUILD_DIR = build
 SRC_DIR = src
 
-all : benos.bin
+all : benos.bin 
 
 clean :
 	rm -rf $(BUILD_DIR) *.bin 
@@ -39,6 +39,7 @@ DEP_FILES = $(OBJ_FILES:%.o=%.d)
 benos.bin: $(SRC_DIR)/linker.ld $(OBJ_FILES)
 	$(ARMGNU)-ld -T $(SRC_DIR)/linker.ld -o $(BUILD_DIR)/benos.elf  $(OBJ_FILES) -e _start
 	$(ARMGNU)-objcopy $(BUILD_DIR)/benos.elf -O binary benos.bin
+	$(ARMGNU)-objdump -xDS $(BUILD_DIR)/benos.elf > benos.dis
 
 QEMU_FLAGS  += -nographic
 

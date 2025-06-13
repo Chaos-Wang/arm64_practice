@@ -13,6 +13,9 @@
 #ifndef __ASSEMBLER__
 
 void memzero(unsigned long src, unsigned long n);
+void memcpy(void *src, void *dst, int len);
+void* memset(void *src, int c, int len);
+void chat3(void);
 
 #endif
 
