@@ -15,14 +15,31 @@ memcpy:
 
 .globl memset
 memset:
-	mov 	x4, x0
 	orr 	x3, x1, x1, LSL #8
 	orr 	x3, x3, x3, LSL #16
 	orr 	x3, x3, x3, LSL #32
 	mov 	x1, x3
+	mov     x4, x0
+	
+	ands 	x5, x0, #0x0f
+	b.eq 	2f
+	mov 	x6, #16
+	sub 	x5, x6, x5
+	sub 	x2, x2, x5
 1:
-	stp 	x1, x3, [x4], #16
-	subs 	x2, x2, #16
+	strb 	w1, [x4], #1
+	subs 	x5, x5, #1
 	b.gt 	1b
+2:
+	stp 	x1, x3, [x4], #16
+	sub 	x2, x2, #16
+	cmp 	x2, #16
+	b.ge 	2b
+1:
+	strb 	w1, [x4], #1
+	subs 	x2, x2, #1
+	b.gt 	1b
+
+
 	ret
 	
